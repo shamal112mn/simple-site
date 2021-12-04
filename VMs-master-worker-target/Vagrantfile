@@ -1,0 +1,71 @@
+# This Vagrant file will build 3 VMs
+# Master ssh public keys will be uploaded to the worker and target VMs
+# from your own terminal: vagrant ssh master or worker or target
+# From master node: ssh vagrant@target or 100.0.0.3
+# From master node: ssh vagrant@worker or 100.0.0.2
+
+
+
+Vagrant.configure("2") do |config|
+    config.vm.define "master" do |master|
+      master.vm.box_download_insecure = true
+      master.vm.disk :disk, name: "disk1", size: "40GB", primary: true
+      master.vm.synced_folder "myfolder/", "/home/vagrant/myfolder"
+      master.vm.box = "bento/ubuntu-20.04"
+      master.vm.network "forwarded_port", guest: 8080, host: 8090
+      master.vm.network "forwarded_port", guest: 8081, host: 8091
+      master.vm.network "forwarded_port", guest: 8082, host: 8092
+      master.vm.network "private_network", ip: "100.0.0.1"
+      master.vm.provision "shell", path: "scripts/hosts.sh"
+      master.vm.provision "shell", path: "scripts/docker.sh"
+      master.vm.provision "shell", path: "scripts/docker-jenkins.sh"
+      master.vm.provision "shell", path: "scripts/masterpubkey-transfer.sh"
+      master.vm.hostname = "master"
+      master.vm.provider "virtualbox" do |v|
+        v.name = "master"
+        v.memory = 2048
+        v.cpus = 2
+      end
+    end
+  
+    config.vm.define "worker" do |worker|
+      worker.vm.box_download_insecure = true
+      worker.vm.disk :disk, name: "worker", size: "20GB", primary: true
+      worker.vm.synced_folder "myfolder/", "/home/vagrant/myfolder" 
+      worker.vm.box = "bento/ubuntu-20.04"        ## For ubuntu 18.04 use - hashicorp/bionic64
+      worker.vm.network "forwarded_port", guest: 9080, host: 9080
+      worker.vm.network "private_network", ip: "100.0.0.2"    
+      worker.vm.provision "shell", path: "scripts/hosts.sh"
+      worker.vm.provision "shell", path: "scripts/javaDefault.sh"
+      worker.vm.provision "shell", path: "scripts/docker.sh" 
+      worker.vm.provision "shell", path: "scripts/masterpubkey-transfer.sh" 
+      worker.vm.hostname = "worker"
+      worker.vm.provider "virtualbox" do |v|
+        v.name = "worker"
+        v.memory = 2048
+        v.cpus = 2
+      end
+    end
+  
+    config.vm.define "target" do |target|
+      target.vm.box_download_insecure = true
+      target.vm.disk :disk, name: "target", size: "20GB", primary: true
+      target.vm.synced_folder "myfolder/", "/home/vagrant/myfolder" 
+      target.vm.box = "bento/ubuntu-20.04"        ## For ubuntu 18.04 use - hashicorp/bionic64
+      target.vm.network "forwarded_port", guest: 80, host: 8380
+      target.vm.network "forwarded_port", guest: 8381, host: 8381
+      target.vm.network "private_network", ip: "100.0.0.3"    
+      target.vm.provision "shell", path: "scripts/hosts.sh"
+      target.vm.provision "shell", path: "scripts/javaDefault.sh"
+      target.vm.provision "shell", path: "scripts/docker.sh"
+      target.vm.provision "shell", path: "scripts/masterpubkey-transfer.sh"  
+      target.vm.hostname = "target"
+      target.vm.provider "virtualbox" do |v|
+        v.name = "target"
+        v.memory = 2048
+        v.cpus = 2
+      end
+    end 
+end
+  
+  
