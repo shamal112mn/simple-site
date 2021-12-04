@@ -1,4 +1,4 @@
-NGING project for jenkins
+NGINX project for jenkins
 
 ```
 Nginx server will be running from port 80
