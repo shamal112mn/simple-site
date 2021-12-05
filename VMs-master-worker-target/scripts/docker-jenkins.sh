@@ -20,7 +20,7 @@ echo "Swapping jenkins_home for running myjenkins container"
 sleep 10
 sudo rm -rf /var/lib/docker/volumes/jenkins_home
 sleep 2
-sudo cp -r  /home/vagrant/myfolder/backups/jenkins_home/*  /var/lib/docker/volumes/
+sudo cp -r  /home/vagrant/myfolder/backups/jenkins_home  /var/lib/docker/volumes
 sleep 5
 sudo chown -R 1000:1000 /var/lib/docker/volumes/jenkins_home
 sleep 1
