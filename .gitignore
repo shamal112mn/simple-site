@@ -1,2 +1,4 @@
 VMs-master-worker-target/.vagrant
 VMs-master-worker-target/myfolder/backups/jenkins_home*
+VMs-master-worker-target/myfolder/backups/jenkins-home-tar-gz*
+VMs-master-worker-target/myfolder/backups/split-backup.sh
