@@ -28,6 +28,8 @@ echo "Please, wait Restarting jenkins server"
 docker restart myjenkins
 echo "************************************"
 echo 
+echo "  Navigate on browser: localhost:8090"
+echo
 echo "     jenkins admin user: "
 echo "     username: admin"
 echo "     password: admin"
