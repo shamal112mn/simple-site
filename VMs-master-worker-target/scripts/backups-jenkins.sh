@@ -10,7 +10,8 @@ if [ -d "$pathVolumes/jenkins_home" ]
 then    
     cd $pathVolumes
     tar -cvzf jenkins_home.tar.gz  jenkins_home
-    mv jenkins_home.tar.gz  /home/vagrant/myfolder/backups
+    split -b 40M  jenkins_home.tar.gz  jenkins-home-tar-gz
+    mv jenkins-home-tar-gz*  /home/vagrant/myfolder/backups
     cd /home/vagrant/myfolder/backups
     su vagrant
 else 

@@ -10,6 +10,7 @@ if [ $HOSTNAME = $MASTER ]
 then
     cp /$pathMasterpubkey/id_rsa  /home/vagrant/.ssh/
     cp /$pathMasterpubkey/id_rsa.pub  /home/vagrant/.ssh/
+    sudo chown -R vagrant:vagrant /home/vagrant/.ssh
 else
     cat /$pathMasterpubkey/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys
 
